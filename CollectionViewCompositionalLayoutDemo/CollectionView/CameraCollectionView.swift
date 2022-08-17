@@ -18,7 +18,13 @@ class CameraCollectionView: UIViewController {
                                 CameraDTO(id: 7, name: "Cannon"),
                                 CameraDTO(id: 8, name: "Cannon"),
                                 CameraDTO(id: 9, name: "Cannon"),
-                                CameraDTO(id: 10, name: "Cannon")]
+                                CameraDTO(id: 10, name: "Cannon"),
+                                CameraDTO(id: 11, name: "Cannon"),
+                                CameraDTO(id: 12, name: "Cannon"),
+                                CameraDTO(id: 13, name: "Cannon"),
+                                CameraDTO(id: 14, name: "Cannon"),
+                                CameraDTO(id: 15, name: "Cannon"),
+                    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +40,7 @@ extension CameraCollectionView {
         let height = self.view.frame.height
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: (width - 30) / 3  , height: 120)
+        layout.itemSize = CGSize(width: (width - 30) / 2  , height: 120)
         layout.minimumLineSpacing = CGFloat(integerLiteral: 10)
         layout.minimumInteritemSpacing = CGFloat(integerLiteral: 2)
         layout.scrollDirection = .vertical
