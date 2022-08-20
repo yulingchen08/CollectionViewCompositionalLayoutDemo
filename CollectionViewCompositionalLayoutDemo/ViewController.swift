@@ -30,6 +30,22 @@ class ViewController: UIViewController {
     
     var collectionView: UICollectionView!
 
+    lazy var horizontalOneRowLayout: UICollectionViewLayout = {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(120))
+       let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2), heightDimension: .absolute(120))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: nil, trailing: .fixed(8), bottom: nil)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+    
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -59,6 +75,8 @@ extension ViewController {
         collectionView.register(DeviceCeollectionVeiwCell.self, forCellWithReuseIdentifier: "cell") //***
         view.addSubview(collectionView)
     }
+    
+   
 }
 
 

@@ -25,6 +25,48 @@ class CameraCollectionView: UIViewController {
                                 CameraDTO(id: 14, name: "Cannon"),
                                 CameraDTO(id: 15, name: "Cannon"),
                     ]
+   
+    lazy var horizontalOneRowLayout: UICollectionViewLayout = {
+        /// 4
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(120)
+        )
+
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(0.2),
+            heightDimension: .absolute(120)
+        )
+
+        // 3 group 的功用，就是把一個或多個 item 圈在一起，利用這個特性，我們就可以做出許許多多的變化
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+        //the amount of the sapce between the items in the group
+        //item中間的空格大小
+        //group.interItemSpacing = .fixed(8)
+        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(
+            leading: nil,
+            top: nil,
+            trailing: .fixed(8),
+            bottom: nil
+        )
+
+        /// 2
+        let section = NSCollectionLayoutSection(group: group)
+        //一旦被設定， CollectionView 的 section 實作會變成一個特別的橫向 scroll view
+        //要讓這個 section 可以與 CollectionView 滾動的 90 度方向滾動
+        section.orthogonalScrollingBehavior = .continuous
+        //增加section的邊緣空間
+        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+
+        /// 1
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +87,7 @@ extension CameraCollectionView {
         layout.minimumInteritemSpacing = CGFloat(integerLiteral: 2)
         layout.scrollDirection = .vertical
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: horizontalOneRowLayout)
         collectionView.register(CameraCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
         collectionView.dataSource = self
