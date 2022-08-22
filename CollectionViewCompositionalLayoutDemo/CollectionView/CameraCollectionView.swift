@@ -91,6 +91,36 @@ class CameraCollectionView: UIViewController {
         return layout
     }()
     
+    lazy var nestedGroupLayout: UICollectionViewLayout = {
+        let leftItemSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(120))
+        let leftItem = NSCollectionLayoutItem(layoutSize: leftItemSize)
+        
+        
+        let rightSmallItemSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(45))
+        let rightSmallItem = NSCollectionLayoutItem(layoutSize: rightSmallItemSize)
+
+        let rightLargeItemSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(65))
+        let rightLargeItem = NSCollectionLayoutItem(layoutSize: rightLargeItemSize)
+        
+        let rightGroupSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(120))
+        let rightGroup = NSCollectionLayoutGroup.vertical(layoutSize: rightGroupSize, subitems: [rightSmallItem, rightLargeItem])
+        
+        rightGroup.interItemSpacing = .fixed(10)
+                        
+        // 包含一個左邊的 item 跟右邊的子 group 的大 group
+        let bigGroupSize = NSCollectionLayoutSize(widthDimension: .absolute(135), heightDimension: .absolute(120))
+        let bigGroup = NSCollectionLayoutGroup.horizontal(layoutSize: bigGroupSize, subitems: [leftItem, rightGroup])
+        bigGroup.interItemSpacing = .fixed(5)
+        bigGroup.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: nil, trailing: .fixed(10), bottom: nil)
+                             
+        let section = NSCollectionLayoutSection(group: bigGroup)
+        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Doing setupUI")
@@ -110,7 +140,7 @@ extension CameraCollectionView {
         layout.minimumInteritemSpacing = CGFloat(integerLiteral: 2)
         layout.scrollDirection = .vertical
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: multiItemSizeLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: nestedGroupLayout)
         collectionView.register(CameraCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
         collectionView.dataSource = self
