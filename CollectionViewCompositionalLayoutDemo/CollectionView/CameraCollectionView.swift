@@ -69,6 +69,28 @@ class CameraCollectionView: UIViewController {
     }()
     
     lazy var multiItemSizeLayout: UICollectionViewLayout = {
+        
+        //header
+        // 設定 header 的大小
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(40))
+
+        // 負責描述 supplementary item 的物件
+        let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top,
+            absoluteOffset: CGPoint(x: 0, y: -5)
+        )
+        
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(40))
+        let footerItem = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: footerSize,
+            elementKind: UICollectionView.elementKindSectionFooter,
+            alignment: .bottom,
+            absoluteOffset: CGPoint(x: 0, y: -5)
+        )
+        
+        
         let smallItemSize = NSCollectionLayoutSize(widthDimension: .absolute(100), heightDimension: .absolute(45))
         let mediumItemSize = NSCollectionLayoutSize(widthDimension: .absolute(100), heightDimension: .absolute(65))
         let largeItemSize = NSCollectionLayoutSize(widthDimension: .absolute(100), heightDimension: .absolute(85))
@@ -87,6 +109,8 @@ class CameraCollectionView: UIViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+        
+        section.boundarySupplementaryItems = [headerItem, footerItem]
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }()
@@ -140,10 +164,13 @@ extension CameraCollectionView {
         layout.minimumInteritemSpacing = CGFloat(integerLiteral: 2)
         layout.scrollDirection = .vertical
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: nestedGroupLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: multiItemSizeLayout)
         collectionView.register(CameraCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
+        
+        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind:  UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
         self.view.addSubview(collectionView)
         
     }
@@ -167,6 +194,42 @@ extension CameraCollectionView: UICollectionViewDataSource {
         cell.backgroundColor = indexPath.row % 2 == 0 ? UIColor.orange : UIColor.brown
         cell.updateFrame(object: cameras[indexPath.row])
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        //Create UICollectionReusableView
+        var reusableView = UICollectionReusableView()
+        
+        let label = UILabel(frame: CGRect(x: 0,
+                                          y: 0,
+                                          width: 150,
+                                          height: 40))
+        label.textAlignment = .center
+        
+        if kind == UICollectionView.elementKindSectionHeader {
+            // header
+            reusableView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: UICollectionView.elementKindSectionHeader,
+                withReuseIdentifier: "Header",
+                for: indexPath
+            )
+            //header content
+            reusableView.backgroundColor = UIColor.darkGray
+            label.text = "Header";
+            label.textColor = UIColor.white
+        } else if kind == UICollectionView.elementKindSectionFooter {
+            // footer
+            reusableView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: UICollectionView.elementKindSectionFooter,
+                withReuseIdentifier: "Footer",
+                for: indexPath)
+            //footer content
+            reusableView.backgroundColor = UIColor.cyan
+            label.text = "Footer";
+            label.textColor = UIColor.black
+        }
+        reusableView.addSubview(label)
+        return reusableView
     }
 }
 
