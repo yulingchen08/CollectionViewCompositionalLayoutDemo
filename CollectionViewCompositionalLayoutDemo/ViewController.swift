@@ -54,6 +54,29 @@ class ViewController: UIViewController {
         return layout
     }()
     
+    lazy var customGroupLayout: UICollectionViewLayout = {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let height: CGFloat = 120.0
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(height))
+        let group = NSCollectionLayoutGroup.custom(layoutSize: groupSize, itemProvider: { env -> [NSCollectionLayoutGroupCustomItem] in
+            let size = env.container.contentSize
+            let spacing:CGFloat = 8.0
+            let width = (size.width-spacing*4) / 3.0
+            
+            return [ NSCollectionLayoutGroupCustomItem(frame: CGRect(x: 0, y: 0, width: width, height: height/3.0)),
+                     NSCollectionLayoutGroupCustomItem(frame: CGRect(x: width+spacing, y: height/3, width: width, height: height/3.0)),
+                     NSCollectionLayoutGroupCustomItem(frame: CGRect(x: (width+spacing)*2.0, y: height/3.0*2, width: width, height: height/3.0))
+            ]
+        })
+        
+        let section = NSCollectionLayoutSection(group: group)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -77,7 +100,7 @@ extension ViewController {
         layout.scrollDirection = .vertical // 滑動方向預設為垂直。注意若設為垂直，則cell的加入方式為由左至右，滿了才會換行；若是水平則由上往下，滿了才會換列
         
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: horizontalOneRowLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: customGroupLayout)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(DeviceCeollectionVeiwCell.self, forCellWithReuseIdentifier: "cell") //***

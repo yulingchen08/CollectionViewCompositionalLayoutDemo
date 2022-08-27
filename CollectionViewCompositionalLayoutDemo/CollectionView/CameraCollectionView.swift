@@ -179,6 +179,31 @@ class CameraCollectionView: UIViewController {
     }()
     
     
+    lazy var customLayout: UICollectionViewLayout = {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(35))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let height: CGFloat = 120.0
+        let groupLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(height)) //這邊給gourp的傯width和height，下面在用這個height去除，比例分配給小group
+        let group = NSCollectionLayoutGroup.custom(
+            layoutSize: groupLayoutSize,
+            itemProvider: { env -> [NSCollectionLayoutGroupCustomItem] in
+                let size = env.container.contentSize
+                let spacing: CGFloat = 8.0
+                let itemWidth = (size.width-spacing*4)/3.0
+                
+                return [NSCollectionLayoutGroupCustomItem(frame: CGRect(x: 0, y: 0, width: itemWidth, height: height/3.0)),
+                        NSCollectionLayoutGroupCustomItem(frame: CGRect(x: itemWidth+spacing, y: height/3.0, width: itemWidth, height: height/3.0)),
+                        NSCollectionLayoutGroupCustomItem(frame: CGRect(x: (itemWidth+spacing)*2, y: height*2/3.0, width: itemWidth, height: height/3.0))
+               ]
+        })
+                
+        let section = NSCollectionLayoutSection(group: group)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        return layout
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Doing setupUI")
@@ -198,7 +223,7 @@ extension CameraCollectionView {
         layout.minimumInteritemSpacing = CGFloat(integerLiteral: 2)
         layout.scrollDirection = .vertical
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: decorationGroupLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: customLayout)
         collectionView.register(CameraCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
         collectionView.dataSource = self
