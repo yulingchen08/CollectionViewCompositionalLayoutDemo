@@ -21,8 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: scene)
         self.window = window
         
-        //let rootViewController = CameraCollectionView()
-        let rootViewController = ViewController()
+        let rootViewController = CameraCollectionView()
+       //let rootViewController = ViewController()
         self.window?.rootViewController = rootViewController
         
         self.window?.makeKeyAndVisible()

@@ -116,9 +116,16 @@ class CameraCollectionView: UIViewController {
     }()
     
     lazy var nestedGroupLayout: UICollectionViewLayout = {
-        let leftItemSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(120))
-        let leftItem = NSCollectionLayoutItem(layoutSize: leftItemSize)
         
+        let badgeSize = NSCollectionLayoutSize(widthDimension: .absolute(30), heightDimension: .absolute(30))
+        let badgeContainerAnchor = NSCollectionLayoutAnchor(edges: [.top, .leading], absoluteOffset: CGPoint(x: 10, y: 10))
+        let badgeItemAnchor = NSCollectionLayoutAnchor(edges: [.bottom, .trailing], absoluteOffset: CGPoint(x: 0, y: 0))
+
+        let badgeItem = NSCollectionLayoutSupplementaryItem(layoutSize: badgeSize, elementKind: BadgeView.reuseIdentifier, containerAnchor: badgeContainerAnchor, itemAnchor: badgeItemAnchor)
+        
+        
+        let leftItemSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(120))
+        let leftItem = NSCollectionLayoutItem(layoutSize: leftItemSize, supplementaryItems: [badgeItem])
         
         let rightSmallItemSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(45))
         let rightSmallItem = NSCollectionLayoutItem(layoutSize: rightSmallItemSize)
@@ -135,10 +142,10 @@ class CameraCollectionView: UIViewController {
         let bigGroupSize = NSCollectionLayoutSize(widthDimension: .absolute(135), heightDimension: .absolute(120))
         let bigGroup = NSCollectionLayoutGroup.horizontal(layoutSize: bigGroupSize, subitems: [leftItem, rightGroup])
         bigGroup.interItemSpacing = .fixed(5)
-        bigGroup.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: nil, trailing: .fixed(10), bottom: nil)
+        bigGroup.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(20), top: nil, trailing: .fixed(10), bottom: nil)
                              
         let section = NSCollectionLayoutSection(group: bigGroup)
-        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+        //section.orthogonalScrollingBehavior = .continuous // 加上這行  badge會在item下面，是ios的bug
         
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
@@ -164,13 +171,15 @@ extension CameraCollectionView {
         layout.minimumInteritemSpacing = CGFloat(integerLiteral: 2)
         layout.scrollDirection = .vertical
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: multiItemSizeLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: nestedGroupLayout)
         collectionView.register(CameraCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
         
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind:  UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
+        
+        collectionView.register(BadgeView.self, forSupplementaryViewOfKind: BadgeView.reuseIdentifier, withReuseIdentifier: "badge")
         self.view.addSubview(collectionView)
         
     }
@@ -202,7 +211,7 @@ extension CameraCollectionView: UICollectionViewDataSource {
         
         let label = UILabel(frame: CGRect(x: 0,
                                           y: 0,
-                                          width: 150,
+                                          width: 40,
                                           height: 40))
         label.textAlignment = .center
         
@@ -227,9 +236,55 @@ extension CameraCollectionView: UICollectionViewDataSource {
             reusableView.backgroundColor = UIColor.cyan
             label.text = "Footer";
             label.textColor = UIColor.black
+        } else if kind == BadgeView.reuseIdentifier {
+            let badgeView = collectionView.dequeueReusableSupplementaryView(ofKind: BadgeView.reuseIdentifier, withReuseIdentifier: "badge", for: indexPath) as! BadgeView
+           
+            badgeView.backgroundColor = .blue
+            return badgeView
         }
         reusableView.addSubview(label)
         return reusableView
     }
 }
 
+
+//要當header或footer的圖片都繼承UICollectionReusableView去做
+class BadgeView: UICollectionReusableView {
+    private var label: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.text = String(Int.random(in: 1...9))
+        return label
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .systemRed
+
+        addSubview(label)
+
+        NSLayoutConstraint.activate([
+            label.centerYAnchor.constraint(equalTo: centerYAnchor),
+            label.centerXAnchor.constraint(equalTo: centerXAnchor)
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = bounds.height/2
+    }
+}
+
+
+
+extension UICollectionReusableView {
+    static var reuseIdentifier: String {
+        String(describing: Self.self)
+    }
+}
