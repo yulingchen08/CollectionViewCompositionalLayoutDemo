@@ -31,6 +31,13 @@ class ViewController: UIViewController {
     var collectionView: UICollectionView!
 
     lazy var horizontalOneRowLayout: UICollectionViewLayout = {
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(40))
+        let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top, absoluteOffset: CGPoint(x: 0, y: 35))
+        
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(40))
+        let footerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom, absoluteOffset: CGPoint(x: 0, y: 30))
+        
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(120))
        let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
@@ -41,6 +48,7 @@ class ViewController: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
         section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        section.boundarySupplementaryItems = [headerItem, footerItem]
     
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
@@ -69,10 +77,14 @@ extension ViewController {
         layout.scrollDirection = .vertical // 滑動方向預設為垂直。注意若設為垂直，則cell的加入方式為由左至右，滿了才會換行；若是水平則由上往下，滿了才會換列
         
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: horizontalOneRowLayout)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(DeviceCeollectionVeiwCell.self, forCellWithReuseIdentifier: "cell") //***
+        
+        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
+        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
+        
         view.addSubview(collectionView)
     }
     
@@ -105,5 +117,27 @@ extension ViewController: UICollectionViewDataSource {
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        var reusableView = UICollectionReusableView()
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+        label.textAlignment = .left
+        label.textColor = UIColor.white
+        if kind == UICollectionView.elementKindSectionHeader {
+            reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header", for: indexPath)
+            reusableView.backgroundColor = .blue
+            
+            label.text = "Header"
+            
+        } else if kind == UICollectionView.elementKindSectionFooter {
+            
+            reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer", for: indexPath)
+            reusableView.backgroundColor = .orange
+            label.text = "Footer"
+        }
+        
+        reusableView.addSubview(label)
+        return reusableView
+    }
     
 }
