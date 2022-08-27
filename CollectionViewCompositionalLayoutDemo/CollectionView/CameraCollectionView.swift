@@ -151,6 +151,33 @@ class CameraCollectionView: UIViewController {
         return layout
     }()
     
+    lazy var decorationGroupLayout: UICollectionViewLayout = {
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(30))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top, absoluteOffset: CGPoint(x: 0, y: 0))
+        
+        let decorationItem = NSCollectionLayoutDecorationItem.background(elementKind: SectionBackgorundDecorationView.elementKind)
+        decorationItem.contentInsets = NSDirectionalEdgeInsets(top: 40, leading: 10, bottom: 10, trailing: 10)
+        
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .fractionalHeight(0.05))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .flexible(5), top: .fixed(5), trailing: .flexible(5), bottom: nil)
+        //用edgeSpacing，可以調整item是否置中的問題，左右邊都用.flexbile(5)，就是會>= 5，看可利用空間，有可能結果會比5大，有點像是swiftUI的spacer()
+        
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(20)
+        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .flexible(15), top: .flexible(40), trailing: .flexible(5), bottom: nil)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.decorationItems = [decorationItem]
+        section.boundarySupplementaryItems = [header]
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        layout.register(SectionBackgorundDecorationView.self, forDecorationViewOfKind: SectionBackgorundDecorationView.elementKind)
+        return layout
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -171,7 +198,7 @@ extension CameraCollectionView {
         layout.minimumInteritemSpacing = CGFloat(integerLiteral: 2)
         layout.scrollDirection = .vertical
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: nestedGroupLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: decorationGroupLayout)
         collectionView.register(CameraCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -211,7 +238,7 @@ extension CameraCollectionView: UICollectionViewDataSource {
         
         let label = UILabel(frame: CGRect(x: 0,
                                           y: 0,
-                                          width: 40,
+                                          width: 60,
                                           height: 40))
         label.textAlignment = .center
         
@@ -223,7 +250,7 @@ extension CameraCollectionView: UICollectionViewDataSource {
                 for: indexPath
             )
             //header content
-            reusableView.backgroundColor = UIColor.darkGray
+            reusableView.backgroundColor = UIColor.black
             label.text = "Header";
             label.textColor = UIColor.white
         } else if kind == UICollectionView.elementKindSectionFooter {
@@ -287,4 +314,26 @@ extension UICollectionReusableView {
     static var reuseIdentifier: String {
         String(describing: Self.self)
     }
+    
+}
+
+
+
+class SectionBackgorundDecorationView: UICollectionReusableView {
+    static var elementKind: String {
+        String(describing: Self.self)
+    }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = .gray
+        self.layer.cornerRadius = 10
+        self.layer.masksToBounds = true
+        
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }

@@ -22,7 +22,7 @@ class CameraCollectionViewCell: UICollectionViewCell {
         nameLable.textColor = .blue
         nameLable.textAlignment = .center
         addSubview(idLabel)
-        addSubview(nameLable)
+        //addSubview(nameLable)
     }
     
     required init?(coder: NSCoder) {
@@ -31,6 +31,6 @@ class CameraCollectionViewCell: UICollectionViewCell {
     
     func updateFrame(object: CameraDTO) {
         self.idLabel.text = "\(object.id)"
-        self.nameLable.text = object.name
+        //self.nameLable.text = object.name
     }
 }
