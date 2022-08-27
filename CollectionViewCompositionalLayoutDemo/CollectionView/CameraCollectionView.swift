@@ -201,6 +201,18 @@ class CameraCollectionView: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         let layout = UICollectionViewCompositionalLayout(section: section)
         
+        //從原本輸入一個靜態的 section 元件，改成輸入一個 closure，這個 closure 負責接收 section 的 index 跟容器的 environment，回傳對應的 section layout 元件。使用上會長這個樣子：
+        //這個程式會根據不同的 section，回傳組好的 section layout 元件。有了這個 section provider 之後，我們就可以不用在創造 CollectionView 的時候決定好所有的 layout，某些設計的變化可以透過 section provider 在下一個 collection layout 循環時再提供就 ok 了。
+        let layout2 = UICollectionViewCompositionalLayout.init(sectionProvider: {
+            (sectionIndex, environment) -> NSCollectionLayoutSection? in
+            switch sectionIndex {
+            case 0:
+                return section
+            default:
+                return section
+            }
+            
+        })
         return layout
     }()
     
