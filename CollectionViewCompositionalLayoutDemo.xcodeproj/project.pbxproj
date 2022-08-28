@@ -20,6 +20,9 @@
 		9215495628AD3A6700DB2EA5 /* CameraCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9215495528AD3A6700DB2EA5 /* CameraCollectionViewCell.swift */; };
 		9215495828AD3CA900DB2EA5 /* CameraCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9215495728AD3CA900DB2EA5 /* CameraCollectionView.swift */; };
 		9215495A28AD3FD900DB2EA5 /* CameraDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9215495928AD3FD900DB2EA5 /* CameraDTO.swift */; };
+		92E8D9FB28BBB080003BFCFC /* MovieTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8D9FA28BBB080003BFCFC /* MovieTableView.swift */; };
+		92E8D9FD28BBB105003BFCFC /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8D9FC28BBB104003BFCFC /* Utility.swift */; };
+		92E8D9FF28BBB739003BFCFC /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8D9FE28BBB739003BFCFC /* MovieTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,9 @@
 		9215495528AD3A6700DB2EA5 /* CameraCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCollectionViewCell.swift; sourceTree = "<group>"; };
 		9215495728AD3CA900DB2EA5 /* CameraCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCollectionView.swift; sourceTree = "<group>"; };
 		9215495928AD3FD900DB2EA5 /* CameraDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDTO.swift; sourceTree = "<group>"; };
+		92E8D9FA28BBB080003BFCFC /* MovieTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableView.swift; sourceTree = "<group>"; };
+		92E8D9FC28BBB104003BFCFC /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		92E8D9FE28BBB739003BFCFC /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,7 @@
 		9215491028A8062B00DB2EA5 /* CollectionViewCompositionalLayoutDemo */ = {
 			isa = PBXGroup;
 			children = (
+				92E8D9F928BBB06A003BFCFC /* TableView */,
 				9215495228AD3A1C00DB2EA5 /* CollectionView */,
 				9215494128A8A77D00DB2EA5 /* Models */,
 				9215491128A8062B00DB2EA5 /* AppDelegate.swift */,
@@ -115,6 +122,7 @@
 				9215491A28A8062C00DB2EA5 /* Assets.xcassets */,
 				9215491C28A8062C00DB2EA5 /* LaunchScreen.storyboard */,
 				9215491F28A8062C00DB2EA5 /* Info.plist */,
+				92E8D9FC28BBB104003BFCFC /* Utility.swift */,
 			);
 			path = CollectionViewCompositionalLayoutDemo;
 			sourceTree = "<group>";
@@ -139,6 +147,7 @@
 		9215494128A8A77D00DB2EA5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9215495928AD3FD900DB2EA5 /* CameraDTO.swift */,
 				9215494328A8A81200DB2EA5 /* DeviceDTO.swift */,
 				9215494528A8A8CC00DB2EA5 /* DeviceCollectionViewCell.swift */,
 			);
@@ -150,9 +159,17 @@
 			children = (
 				9215495528AD3A6700DB2EA5 /* CameraCollectionViewCell.swift */,
 				9215495728AD3CA900DB2EA5 /* CameraCollectionView.swift */,
-				9215495928AD3FD900DB2EA5 /* CameraDTO.swift */,
 			);
 			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		92E8D9F928BBB06A003BFCFC /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				92E8D9FA28BBB080003BFCFC /* MovieTableView.swift */,
+				92E8D9FE28BBB739003BFCFC /* MovieTableViewCell.swift */,
+			);
+			path = TableView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -285,13 +302,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92E8D9FD28BBB105003BFCFC /* Utility.swift in Sources */,
 				9215491628A8062B00DB2EA5 /* ViewController.swift in Sources */,
 				9215495828AD3CA900DB2EA5 /* CameraCollectionView.swift in Sources */,
 				9215495A28AD3FD900DB2EA5 /* CameraDTO.swift in Sources */,
 				9215495628AD3A6700DB2EA5 /* CameraCollectionViewCell.swift in Sources */,
+				92E8D9FB28BBB080003BFCFC /* MovieTableView.swift in Sources */,
 				9215494428A8A81200DB2EA5 /* DeviceDTO.swift in Sources */,
 				9215491228A8062B00DB2EA5 /* AppDelegate.swift in Sources */,
 				9215494628A8A8CC00DB2EA5 /* DeviceCollectionViewCell.swift in Sources */,
+				92E8D9FF28BBB739003BFCFC /* MovieTableViewCell.swift in Sources */,
 				9215491428A8062B00DB2EA5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

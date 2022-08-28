@@ -22,7 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         
        // let rootViewController = CameraCollectionView()
-       let rootViewController = ViewController()
+       //let rootViewController = ViewController()
+        let rootViewController = MovieTableView()
         self.window?.rootViewController = rootViewController
         
         self.window?.makeKeyAndVisible()
