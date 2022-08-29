@@ -23,6 +23,8 @@
 		92E8D9FB28BBB080003BFCFC /* MovieTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8D9FA28BBB080003BFCFC /* MovieTableView.swift */; };
 		92E8D9FD28BBB105003BFCFC /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8D9FC28BBB104003BFCFC /* Utility.swift */; };
 		92E8D9FF28BBB739003BFCFC /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8D9FE28BBB739003BFCFC /* MovieTableViewCell.swift */; };
+		92E8DA0128BD11E6003BFCFC /* DogCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8DA0028BD11E6003BFCFC /* DogCollectionView.swift */; };
+		92E8DA0328BD13F7003BFCFC /* DogCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8DA0228BD13F7003BFCFC /* DogCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,8 @@
 		92E8D9FA28BBB080003BFCFC /* MovieTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableView.swift; sourceTree = "<group>"; };
 		92E8D9FC28BBB104003BFCFC /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		92E8D9FE28BBB739003BFCFC /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
+		92E8DA0028BD11E6003BFCFC /* DogCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogCollectionView.swift; sourceTree = "<group>"; };
+		92E8DA0228BD13F7003BFCFC /* DogCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +163,8 @@
 			children = (
 				9215495528AD3A6700DB2EA5 /* CameraCollectionViewCell.swift */,
 				9215495728AD3CA900DB2EA5 /* CameraCollectionView.swift */,
+				92E8DA0028BD11E6003BFCFC /* DogCollectionView.swift */,
+				92E8DA0228BD13F7003BFCFC /* DogCollectionViewCell.swift */,
 			);
 			path = CollectionView;
 			sourceTree = "<group>";
@@ -304,11 +310,13 @@
 			files = (
 				92E8D9FD28BBB105003BFCFC /* Utility.swift in Sources */,
 				9215491628A8062B00DB2EA5 /* ViewController.swift in Sources */,
+				92E8DA0328BD13F7003BFCFC /* DogCollectionViewCell.swift in Sources */,
 				9215495828AD3CA900DB2EA5 /* CameraCollectionView.swift in Sources */,
 				9215495A28AD3FD900DB2EA5 /* CameraDTO.swift in Sources */,
 				9215495628AD3A6700DB2EA5 /* CameraCollectionViewCell.swift in Sources */,
 				92E8D9FB28BBB080003BFCFC /* MovieTableView.swift in Sources */,
 				9215494428A8A81200DB2EA5 /* DeviceDTO.swift in Sources */,
+				92E8DA0128BD11E6003BFCFC /* DogCollectionView.swift in Sources */,
 				9215491228A8062B00DB2EA5 /* AppDelegate.swift in Sources */,
 				9215494628A8A8CC00DB2EA5 /* DeviceCollectionViewCell.swift in Sources */,
 				92E8D9FF28BBB739003BFCFC /* MovieTableViewCell.swift in Sources */,

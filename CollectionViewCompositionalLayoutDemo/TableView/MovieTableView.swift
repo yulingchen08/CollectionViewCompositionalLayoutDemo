@@ -112,7 +112,7 @@ extension MovieTableView {
     }
     
     
-    func applySnapShot() {
+    private func applySnapShot() {
         var snapShot = NSDiffableDataSourceSnapshot<Section, Movie>.init()
         snapShot.appendSections([.comdey, .horror, .action])
         //snapShot.appendItems(movies)
