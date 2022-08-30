@@ -9,33 +9,35 @@ import UIKit
 
 class DogCollectionViewCell: UICollectionViewCell {
     
-    var dogImageView: UIImageView = {
-       let imageView = UIImageView(frame: CGRect(x: 5, y: 0, width: 40, height: 45))
-        return imageView
-    }()
+//    lazy var dogImageView: UIImageView = {
+//        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 45))
+//        imageView.layer.cornerRadius = 20
+//        imageView.clipsToBounds = true
+//        return imageView
+//    }()
     
     var nameLabel: UILabel = {
        let label = UILabel(frame: CGRect(x: 50, y: 0, width: 100, height: 45))
         label.textColor = .white
         return label
     }()
-    
-    var descriptionLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 160, y: 0, width: 250, height: 45))
-        label.textColor = .white
-        return label
-    }()
+//
+//    var descriptionLabel: UILabel = {
+//        let label = UILabel(frame: CGRect(x: 160, y: 0, width: 250, height: 45))
+//        label.textColor = .white
+//        return label
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        [dogImageView, nameLabel, descriptionLabel].forEach(addSubview)
+        [nameLabel].forEach(addSubview)
     }
     
     func updateFrame(dog: Dog){
-        dogImageView.image = UIImage(systemName: dog.imageName)
+        //dogImageView.image = UIImage(systemName: dog.imageName)
         nameLabel.text = dog.name
-        descriptionLabel.text = dog.description
+        //descriptionLabel.text = dog.description
     }
     
     required init?(coder: NSCoder) {

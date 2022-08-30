@@ -7,8 +7,8 @@
 
 import UIKit
 
-enum DogType {
-    case smallDog
+enum DogType: Int {
+    case smallDog = 0
     case MediumDog
     case LargeDog
 }
@@ -23,10 +23,15 @@ struct Dog: Hashable {
 class DogCollectionView: UIViewController {
         
     lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout.init()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: self.view.frame.width/4, height: self.view.frame.width/4)
+        //layout.estimatedItemSize = CGSize(width: self.view.frame.width/4, height: self.view.frame.width/4)
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        layout.scrollDirection = .vertical
         
-        let config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-                let layout = UICollectionViewCompositionalLayout.list(using: config)
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: Screen.width, height: Screen.width), collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: Screen.width, height: Screen.height), collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.backgroundColor = .white
         collectionView.register(DogCollectionViewCell.self, forCellWithReuseIdentifier: "dogCell")
@@ -35,7 +40,9 @@ class DogCollectionView: UIViewController {
     
     var smallDogs: [Dog] = [
         Dog(id: "1", name: "Pinky", description: "Cute dog", imageName: "ant"),
-        Dog(id: "2", name: "Toro", description: "Smart dog", imageName: "ant")
+        Dog(id: "2", name: "Toro", description: "Smart dog", imageName: "ant"),
+        Dog(id: "3", name: "Toro", description: "Smart dog", imageName: "ant"),
+        Dog(id: "4", name: "Toro", description: "Smart dog", imageName: "ant")
     ]
     
     var mediumDogs: [Dog] = [
@@ -70,6 +77,7 @@ extension DogCollectionView {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dogCell", for: indexPath) as! DogCollectionViewCell
             cell.updateFrame(dog: dog)
+            cell.backgroundColor = .green
             return cell
         })
         collectionView.dataSource = dataSource
@@ -77,7 +85,7 @@ extension DogCollectionView {
     
     private func applySnapShot() {
         var snapShot = NSDiffableDataSourceSnapshot<DogType, Dog>()
-        snapShot.appendSections([.LargeDog, .MediumDog, .smallDog])
+        snapShot.appendSections([.smallDog, .MediumDog, .LargeDog])
         snapShot.appendItems(bigDogs, toSection: .LargeDog)
         snapShot.appendItems(mediumDogs, toSection: .MediumDog)
         snapShot.appendItems(smallDogs, toSection: .smallDog)
@@ -88,6 +96,17 @@ extension DogCollectionView {
 
 extension DogCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let row = indexPath.row
+        switch indexPath.section {
+        case DogType.smallDog.rawValue:
+            self.smallDogs.remove(at: row)
+        case DogType.MediumDog.rawValue:
+            self.mediumDogs.remove(at: row)
+        case DogType.LargeDog.rawValue:
+            self.bigDogs.remove(at: row)
+        default:
+            break
+        }
+        applySnapShot()
     }
 }
