@@ -18,7 +18,7 @@ class DogCollectionViewCell: UICollectionViewCell {
     
     var nameLabel: UILabel = {
        let label = UILabel(frame: CGRect(x: 50, y: 0, width: 100, height: 45))
-        label.textColor = .white
+        label.textColor = .black
         return label
     }()
 //

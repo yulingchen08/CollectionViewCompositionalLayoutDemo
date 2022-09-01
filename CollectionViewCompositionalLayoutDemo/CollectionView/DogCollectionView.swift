@@ -21,7 +21,8 @@ struct Dog: Hashable {
 }
 
 class DogCollectionView: UIViewController {
-        
+    let network = NetworkService()
+    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout.init()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -31,12 +32,73 @@ class DogCollectionView: UIViewController {
         layout.minimumInteritemSpacing = 0
         layout.scrollDirection = .vertical
         
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: Screen.width, height: Screen.height), collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: Screen.width, height: Screen.height), collectionViewLayout: nestedGroupLayout)
         collectionView.delegate = self
         collectionView.backgroundColor = .white
         collectionView.register(DogCollectionViewCell.self, forCellWithReuseIdentifier: "dogCell")
         return collectionView
     }()
+    
+    lazy var nestedLayout: UICollectionViewLayout = {
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(100), heightDimension: .absolute(120))
+        let leftItem = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let rightSmallSize = NSCollectionLayoutSize(widthDimension: .absolute(100), heightDimension: .absolute(40))
+        let rightSmallItem = NSCollectionLayoutItem(layoutSize: rightSmallSize)
+        
+        let rightBigSize = NSCollectionLayoutSize(widthDimension: .absolute(100), heightDimension: .absolute(40))
+        let rightBigItem = NSCollectionLayoutItem(layoutSize: rightBigSize)
+        
+        let rightGroupSize = NSCollectionLayoutSize(widthDimension: .absolute(100), heightDimension: .absolute(40))
+        let rightGroup = NSCollectionLayoutGroup.vertical(layoutSize: rightGroupSize, subitems: [rightSmallItem, rightBigItem])
+        rightGroup.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: nil, trailing: nil, bottom: nil)
+        rightGroup.interItemSpacing = .fixed(10)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(200), heightDimension: .absolute(120))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [leftItem, rightGroup])
+        
+        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(20), top: nil, trailing: .fixed(10), bottom: nil)
+                             
+        group.interItemSpacing = .fixed(10)
+        
+        let section = NSCollectionLayoutSection.init(group: group)
+        section.orthogonalScrollingBehavior = .groupPaging
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }()
+    
+    lazy var nestedGroupLayout: UICollectionViewLayout = {
+        
+        
+        let leftItemSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(120))
+        let leftItem = NSCollectionLayoutItem(layoutSize: leftItemSize)
+        
+        let rightSmallItemSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(45))
+        let rightSmallItem = NSCollectionLayoutItem(layoutSize: rightSmallItemSize)
+
+        let rightLargeItemSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(65))
+        let rightLargeItem = NSCollectionLayoutItem(layoutSize: rightLargeItemSize)
+        
+        let rightGroupSize = NSCollectionLayoutSize(widthDimension: .absolute(65), heightDimension: .absolute(120))
+        let rightGroup = NSCollectionLayoutGroup.vertical(layoutSize: rightGroupSize, subitems: [rightSmallItem, rightLargeItem])
+        
+        rightGroup.interItemSpacing = .fixed(10)
+                        
+        // 包含一個左邊的 item 跟右邊的子 group 的大 group
+        let bigGroupSize = NSCollectionLayoutSize(widthDimension: .absolute(135), heightDimension: .absolute(120))
+        let bigGroup = NSCollectionLayoutGroup.horizontal(layoutSize: bigGroupSize, subitems: [leftItem, rightGroup])
+        bigGroup.interItemSpacing = .fixed(5)
+        bigGroup.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(20), top: nil, trailing: .fixed(10), bottom: nil)
+                             
+        let section = NSCollectionLayoutSection(group: bigGroup)
+        //section.orthogonalScrollingBehavior = .continuous // 加上這行  badge會在item下面，是ios的bug
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }()
+    
     
     var smallDogs: [Dog] = [
         Dog(id: "1", name: "Pinky", description: "Cute dog", imageName: "ant"),
@@ -60,6 +122,8 @@ class DogCollectionView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //network.login()
+        network.requestCollections()
         setupCollectionView()
         setupDataSource()
         applySnapShot()
