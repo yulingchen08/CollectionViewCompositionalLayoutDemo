@@ -27,6 +27,7 @@
 		92E8DA0328BD13F7003BFCFC /* DogCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8DA0228BD13F7003BFCFC /* DogCollectionViewCell.swift */; };
 		92E8DA1428C0EB4E003BFCFC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8DA1328C0EB4E003BFCFC /* NetworkService.swift */; };
 		92E8DA1628C0F45B003BFCFC /* FeaturedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8DA1528C0F45B003BFCFC /* FeaturedCollection.swift */; };
+		92E8DA1A28C25844003BFCFC /* CameraCollecionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8DA1928C25844003BFCFC /* CameraCollecionViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		92E8DA0228BD13F7003BFCFC /* DogCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogCollectionViewCell.swift; sourceTree = "<group>"; };
 		92E8DA1328C0EB4E003BFCFC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		92E8DA1528C0F45B003BFCFC /* FeaturedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedCollection.swift; sourceTree = "<group>"; };
+		92E8DA1928C25844003BFCFC /* CameraCollecionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCollecionViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 		9215491028A8062B00DB2EA5 /* CollectionViewCompositionalLayoutDemo */ = {
 			isa = PBXGroup;
 			children = (
+				92E8DA1828C25831003BFCFC /* ViewModels */,
 				92E8DA1228C0EB35003BFCFC /* Networks */,
 				92E8D9F928BBB06A003BFCFC /* TableView */,
 				9215495228AD3A1C00DB2EA5 /* CollectionView */,
@@ -190,6 +193,14 @@
 				92E8DA1328C0EB4E003BFCFC /* NetworkService.swift */,
 			);
 			path = Networks;
+			sourceTree = "<group>";
+		};
+		92E8DA1828C25831003BFCFC /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				92E8DA1928C25844003BFCFC /* CameraCollecionViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -328,6 +339,7 @@
 				9215495828AD3CA900DB2EA5 /* CameraCollectionView.swift in Sources */,
 				9215495A28AD3FD900DB2EA5 /* CameraDTO.swift in Sources */,
 				9215495628AD3A6700DB2EA5 /* CameraCollectionViewCell.swift in Sources */,
+				92E8DA1A28C25844003BFCFC /* CameraCollecionViewModel.swift in Sources */,
 				92E8DA1428C0EB4E003BFCFC /* NetworkService.swift in Sources */,
 				92E8DA1628C0F45B003BFCFC /* FeaturedCollection.swift in Sources */,
 				92E8D9FB28BBB080003BFCFC /* MovieTableView.swift in Sources */,

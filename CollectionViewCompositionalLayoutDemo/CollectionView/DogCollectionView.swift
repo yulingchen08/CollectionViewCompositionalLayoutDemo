@@ -122,8 +122,6 @@ class DogCollectionView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //network.login()
-        network.requestCollections()
         setupCollectionView()
         setupDataSource()
         applySnapShot()

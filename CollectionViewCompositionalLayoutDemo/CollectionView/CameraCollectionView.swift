@@ -9,6 +9,9 @@ import UIKit
 
 class CameraCollectionView: UIViewController {
     var collectionView: UICollectionView!
+    
+    let viewModel = CameraCollectionViewModel()
+    
     let cameras: [CameraDTO] = [CameraDTO(id: 1, name: "Cannon"),
                                 CameraDTO(id: 2, name: "Cannon"),
                                 CameraDTO(id: 3, name: "Cannon"),
@@ -220,6 +223,9 @@ class CameraCollectionView: UIViewController {
         super.viewDidLoad()
         print("Doing setupUI")
         setupUI()
+        bindViewModel()
+        viewModel.requestCollections()
+        
     }
 }
 
@@ -235,7 +241,7 @@ extension CameraCollectionView {
         layout.minimumInteritemSpacing = CGFloat(integerLiteral: 2)
         layout.scrollDirection = .vertical
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: customLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: layout)
         collectionView.register(CameraCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -246,6 +252,16 @@ extension CameraCollectionView {
         collectionView.register(BadgeView.self, forSupplementaryViewOfKind: BadgeView.reuseIdentifier, withReuseIdentifier: "badge")
         self.view.addSubview(collectionView)
         
+    }
+    
+    
+    private func bindViewModel() {
+        viewModel.presentCell = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }            
+        }
     }
 }
 
@@ -259,13 +275,14 @@ extension CameraCollectionView: UICollectionViewDelegate {
 
 extension CameraCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cameras.count
+        return viewModel.cellObjects.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CameraCollectionViewCell
         cell.backgroundColor = indexPath.row % 2 == 0 ? UIColor.orange : UIColor.brown
-        cell.updateFrame(object: cameras[indexPath.row])
+        cell.updateFrame(object: viewModel.cellObjects[indexPath.row])
+        
         return cell
     }
     

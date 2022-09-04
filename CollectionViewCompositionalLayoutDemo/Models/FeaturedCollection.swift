@@ -46,16 +46,16 @@ struct FeaturedCollection: Codable {
         case prevPage = "prev_page"
     }
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        collections = try container.decode([Collection].self, forKey: .collections)
-        page = try container.decode(Int.self, forKey: .page)
-        perPage = try container.decode(Int.self, forKey: .perPage)
-        totalResults = try container.decode(Int.self, forKey: .totalResults)
-        nextPage = try container.decode(String.self, forKey: .nextPage)
-        prevPage = try container.decodeIfPresent(String.self, forKey: .prevPage)
-
-    }
+//    init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        collections = try container.decode([Collection].self, forKey: .collections)
+//        page = try container.decode(Int.self, forKey: .page)
+//        perPage = try container.decode(Int.self, forKey: .perPage)
+//        totalResults = try container.decode(Int.self, forKey: .totalResults)
+//        nextPage = try container.decode(String.self, forKey: .nextPage)
+//        prevPage = try container.decodeIfPresent(String.self, forKey: .prevPage)
+//
+//    }
 }
 
 struct Collection: Codable {
@@ -74,15 +74,15 @@ struct Collection: Codable {
         case videoCount = "videos_count"
     }
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(String.self, forKey: .id)
-        title = try container.decode(String.self, forKey: .title)
-        description = try container.decode(String.self, forKey: .description)
-        `private` = try container.decode(Bool.self, forKey: .private)
-        mediaCount = try container.decode(Int.self, forKey: .mediaCount)
-        photosCount = try container.decode(Int.self, forKey: .photosCount)
-        videoCount = try container.decode(Int.self, forKey: .videoCount)
-    }
+//    init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        id = try container.decode(String.self, forKey: .id)
+//        title = try container.decode(String.self, forKey: .title)
+//        description = try container.decode(String.self, forKey: .description)
+//        `private` = try container.decode(Bool.self, forKey: .private)
+//        mediaCount = try container.decode(Int.self, forKey: .mediaCount)
+//        photosCount = try container.decode(Int.self, forKey: .photosCount)
+//        videoCount = try container.decode(Int.self, forKey: .videoCount)
+//    }
     
 }

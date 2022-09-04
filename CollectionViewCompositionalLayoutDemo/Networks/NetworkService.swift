@@ -7,6 +7,11 @@
 
 import Foundation
 
+enum NetworkError: Error {
+    case decodeError(Error)
+    case httpError
+    case responseDataIsNil
+}
 
 
 class NetworkService: NSObject {
@@ -29,7 +34,7 @@ class NetworkService: NSObject {
     //563492ad6f9170000100000148b1f14dcf6d49e5b4a3a244e310a764
     
     
-    func requestCollections() {
+    func requestCollections(completion: @escaping ((Result<FeaturedCollection, NetworkError>) -> Void)) {
         let url = URL.init(string: "https://api.pexels.com/v1/collections/featured")!
         var request = URLRequest.init(url: url)
         let headers = [
@@ -37,35 +42,35 @@ class NetworkService: NSObject {
             "Content-Type": "application/json"
         ]
         request.httpMethod = "GET"
+        
         //request.setValue("Authorization", forHTTPHeaderField: "563492ad6f9170000100000148b1f14dcf6d49e5b4a3a244e310a764")
         request.allHTTPHeaderFields = headers
         URLSession.shared.dataTask(with: request) { data, response, error in
-            guard error == nil else {
-                print("[Error] requestCollections failed: \(error)")
+                      
+            guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                completion(.failure(.httpError))
                 return
             }
-            print("[Success] requestCollections")
-            if let res = response as? HTTPURLResponse {
-                print("status code: \(res.statusCode)")
+            
+            guard let data = data else {
+                completion(.failure(.responseDataIsNil))
+                return
             }
             
-            
-            if let data = data {
-                do {
-                    let decoder = JSONDecoder()
-                    let featuredCollection = try decoder.decode(FeaturedCollection.self, from: data)
-                    print("featuredCollection: \(featuredCollection)")
-                } catch {
-                    print("Decode failed: \(error)")
-                }
+            do {
+                let decoder = JSONDecoder()
+                let featuredCollection = try decoder.decode(FeaturedCollection.self, from: data)
+                print("featuredCollection: \(featuredCollection)")
+                completion(.success(featuredCollection))
+            } catch {
+                print("Decode failed: \(error)")
+                completion(.failure(.decodeError(error)))
             }
             
         }.resume()
     }
-    
-    
+        
 }
-
 
 
 

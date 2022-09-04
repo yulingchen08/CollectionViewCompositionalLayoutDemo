@@ -11,6 +11,11 @@ class CameraCollectionViewCell: UICollectionViewCell {
     var idLabel: UILabel!
     var nameLable: UILabel!
     
+    struct Object {
+        var id: String
+        var title: String
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -22,15 +27,16 @@ class CameraCollectionViewCell: UICollectionViewCell {
         nameLable.textColor = .blue
         nameLable.textAlignment = .center
         addSubview(idLabel)
-        //addSubview(nameLable)
+        addSubview(nameLable)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateFrame(object: CameraDTO) {
-        self.idLabel.text = "\(object.id)"
+    func updateFrame(object: Object) {
+        self.idLabel.text = object.id
+        self.nameLable.text = object.title
         //self.nameLable.text = object.name
     }
 }
