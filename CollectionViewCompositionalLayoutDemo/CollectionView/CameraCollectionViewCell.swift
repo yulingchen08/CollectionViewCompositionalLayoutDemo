@@ -11,7 +11,7 @@ class CameraCollectionViewCell: UICollectionViewCell {
     var idLabel: UILabel!
     var nameLable: UILabel!
     
-    struct Object {
+    struct Object: Hashable {
         var id: String
         var title: String
     }

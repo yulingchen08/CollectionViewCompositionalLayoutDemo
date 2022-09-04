@@ -11,7 +11,7 @@ class CameraCollectionView: UIViewController {
     var collectionView: UICollectionView!
     
     let viewModel = CameraCollectionViewModel()
-    
+    var dataSource: UICollectionViewDiffableDataSource<Section, CameraCollectionViewCell.Object>!
     let cameras: [CameraDTO] = [CameraDTO(id: 1, name: "Cannon"),
                                 CameraDTO(id: 2, name: "Cannon"),
                                 CameraDTO(id: 3, name: "Cannon"),
@@ -223,6 +223,7 @@ class CameraCollectionView: UIViewController {
         super.viewDidLoad()
         print("Doing setupUI")
         setupUI()
+        setupdataSource()
         bindViewModel()
         viewModel.requestCollections()
         
@@ -231,6 +232,12 @@ class CameraCollectionView: UIViewController {
 
 //private
 extension CameraCollectionView {
+    
+    
+    enum Section {
+        case collection
+    }
+    
     private func setupUI() {
         let width = self.view.frame.width
         let height = self.view.frame.height
@@ -244,7 +251,7 @@ extension CameraCollectionView {
         collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: layout)
         collectionView.register(CameraCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
-        collectionView.dataSource = self
+        //collectionView.dataSource = self
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
         
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind:  UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer")
@@ -259,9 +266,28 @@ extension CameraCollectionView {
         viewModel.presentCell = { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }            
+                //self.collectionView.reloadData()
+                self.applySnapChat()
+            }
         }
+    }
+    
+    private func setupdataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Section, CameraCollectionViewCell.Object>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, object -> CameraCollectionViewCell in
+            guard let self = self else { return CameraCollectionViewCell() }
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CameraCollectionViewCell
+            cell.backgroundColor = indexPath.row % 2 == 0 ? UIColor.orange : UIColor.brown
+            cell.updateFrame(object: self.viewModel.cellObjects[indexPath.row])
+            return cell
+        })
+    }
+    
+    private func applySnapChat() {
+        var snapShot = NSDiffableDataSourceSnapshot<Section, CameraCollectionViewCell.Object>()
+        snapShot.appendSections([.collection])
+        snapShot.appendItems(viewModel.cellObjects, toSection: .collection)
+        dataSource.apply(snapShot, animatingDifferences: true)
+        
     }
 }
 
@@ -272,7 +298,7 @@ extension CameraCollectionView: UICollectionViewDelegate {
     }
 }
 
-
+/*
 extension CameraCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.cellObjects.count
@@ -282,7 +308,7 @@ extension CameraCollectionView: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CameraCollectionViewCell
         cell.backgroundColor = indexPath.row % 2 == 0 ? UIColor.orange : UIColor.brown
         cell.updateFrame(object: viewModel.cellObjects[indexPath.row])
-        
+
         return cell
     }
     
@@ -328,7 +354,7 @@ extension CameraCollectionView: UICollectionViewDataSource {
     }
 }
 
-
+*/
 //要當header或footer的圖片都繼承UICollectionReusableView去做
 class BadgeView: UICollectionReusableView {
     private var label: UILabel = {
