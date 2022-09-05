@@ -27,7 +27,20 @@ class CameraCollectionViewModel {
             
         }
     }
-    
+      
+    func requestPhotos() {
+        network.requestPhotos {
+            switch $0 {
+            case .success(let photoResource):
+                print("requestPhotos success: \(photoResource)")
+            case .failure(let error):
+                print("requestPhotos failure: \(error)")
+            }
+        }
+    }
+}
+
+extension CameraCollectionViewModel {
     private func processCellObject(featureCollection: FeaturedCollection) {
         var objects = [CameraCollectionViewCell.Object]()
         featureCollection.collections.forEach {
@@ -38,6 +51,5 @@ class CameraCollectionViewModel {
         self.cellObjects = objects
         self.presentCell?()
     }
-    
     
 }

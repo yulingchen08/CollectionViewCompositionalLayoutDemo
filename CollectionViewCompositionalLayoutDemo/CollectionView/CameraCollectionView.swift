@@ -226,7 +226,7 @@ class CameraCollectionView: UIViewController {
         setupdataSource()
         bindViewModel()
         viewModel.requestCollections()
-        
+        viewModel.requestPhotos()
     }
 }
 

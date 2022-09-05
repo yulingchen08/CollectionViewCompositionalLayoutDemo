@@ -28,6 +28,7 @@
 		92E8DA1428C0EB4E003BFCFC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8DA1328C0EB4E003BFCFC /* NetworkService.swift */; };
 		92E8DA1628C0F45B003BFCFC /* FeaturedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8DA1528C0F45B003BFCFC /* FeaturedCollection.swift */; };
 		92E8DA1A28C25844003BFCFC /* CameraCollecionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8DA1928C25844003BFCFC /* CameraCollecionViewModel.swift */; };
+		92E8DA1E28C6336F003BFCFC /* CuratedPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8DA1D28C6336F003BFCFC /* CuratedPhoto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		92E8DA1328C0EB4E003BFCFC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		92E8DA1528C0F45B003BFCFC /* FeaturedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedCollection.swift; sourceTree = "<group>"; };
 		92E8DA1928C25844003BFCFC /* CameraCollecionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCollecionViewModel.swift; sourceTree = "<group>"; };
+		92E8DA1D28C6336F003BFCFC /* CuratedPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedPhoto.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 				9215494328A8A81200DB2EA5 /* DeviceDTO.swift */,
 				9215494528A8A8CC00DB2EA5 /* DeviceCollectionViewCell.swift */,
 				92E8DA1528C0F45B003BFCFC /* FeaturedCollection.swift */,
+				92E8DA1D28C6336F003BFCFC /* CuratedPhoto.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				92E8DA0128BD11E6003BFCFC /* DogCollectionView.swift in Sources */,
 				9215491228A8062B00DB2EA5 /* AppDelegate.swift in Sources */,
 				9215494628A8A8CC00DB2EA5 /* DeviceCollectionViewCell.swift in Sources */,
+				92E8DA1E28C6336F003BFCFC /* CuratedPhoto.swift in Sources */,
 				92E8D9FF28BBB739003BFCFC /* MovieTableViewCell.swift in Sources */,
 				9215491428A8062B00DB2EA5 /* SceneDelegate.swift in Sources */,
 			);
