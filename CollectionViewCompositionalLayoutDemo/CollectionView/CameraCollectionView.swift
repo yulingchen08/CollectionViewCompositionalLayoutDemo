@@ -11,7 +11,7 @@ class CameraCollectionView: UIViewController {
     var collectionView: UICollectionView!
     
     let viewModel = CameraCollectionViewModel()
-    var dataSource: UICollectionViewDiffableDataSource<Section, CameraCollectionViewCell.Object>!
+    var dataSource: UICollectionViewDiffableDataSource<Section, CameraCollectionViewCell.PhotoObject>!
     let cameras: [CameraDTO] = [CameraDTO(id: 1, name: "Cannon"),
                                 CameraDTO(id: 2, name: "Cannon"),
                                 CameraDTO(id: 3, name: "Cannon"),
@@ -273,19 +273,21 @@ extension CameraCollectionView {
     }
     
     private func setupdataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, CameraCollectionViewCell.Object>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, object -> CameraCollectionViewCell in
+        dataSource = UICollectionViewDiffableDataSource<Section, CameraCollectionViewCell.PhotoObject>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, object -> CameraCollectionViewCell in
             guard let self = self else { return CameraCollectionViewCell() }
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CameraCollectionViewCell
             cell.backgroundColor = indexPath.row % 2 == 0 ? UIColor.orange : UIColor.brown
-            cell.updateFrame(object: self.viewModel.cellObjects[indexPath.row])
+            //cell.updateFrame(object: self.viewModel.cellObjects[indexPath.row])
+            cell.updatePhotoFrame(object: self.viewModel.cellPhotoObjects[indexPath.row])
             return cell
         })
     }
     
     private func applySnapChat() {
-        var snapShot = NSDiffableDataSourceSnapshot<Section, CameraCollectionViewCell.Object>()
+        var snapShot = NSDiffableDataSourceSnapshot<Section, CameraCollectionViewCell.PhotoObject>()
         snapShot.appendSections([.collection])
-        snapShot.appendItems(viewModel.cellObjects, toSection: .collection)
+        //snapShot.appendItems(viewModel.cellObjects, toSection: .collection)
+        snapShot.appendItems(viewModel.cellPhotoObjects, toSection: .collection)
         dataSource.apply(snapShot, animatingDifferences: true)
         
     }

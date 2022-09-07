@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import UIKit
 
 
 class CameraCollectionViewModel {
     let network = NetworkService.shared
     var presentCell: (() -> Void)? = nil
     var cellObjects = [CameraCollectionViewCell.Object]()
-    
+    var cellPhotoObjects = [CameraCollectionViewCell.PhotoObject]()
     
     func requestCollections() {
         //network.login()
@@ -29,10 +30,11 @@ class CameraCollectionViewModel {
     }
       
     func requestPhotos() {
-        network.requestPhotos {
+        network.requestPhotos { [weak self] in
             switch $0 {
-            case .success(let photoResource):
-                print("requestPhotos success: \(photoResource)")
+            case .success(let curatedPhoto):
+                print("requestPhotos success: \(curatedPhoto)")
+                self?.processCuratedPhotos(curatedPhoto: curatedPhoto)
             case .failure(let error):
                 print("requestPhotos failure: \(error)")
             }
@@ -52,4 +54,27 @@ extension CameraCollectionViewModel {
         self.presentCell?()
     }
     
+    private func processCuratedPhotos(curatedPhoto: CuratedPhoto) {
+        var objects = [CameraCollectionViewCell.PhotoObject]()
+        curatedPhoto.photos.forEach {
+            let photoUrl = $0.src.tiny
+            let id = $0.id
+            let cellObject = CameraCollectionViewCell.PhotoObject(id: id, url: photoUrl)
+            objects.append(cellObject)
+        }
+        
+        self.cellPhotoObjects = objects
+        downloadPhotos()
+    }
+    
+    
+    private func downloadPhotos() {
+        for i in 0..<self.cellPhotoObjects.count {
+            network.downloadImage(url: cellPhotoObjects[i].url, completion: { [weak self] image in
+                self?.cellPhotoObjects[i].image = image
+                self?.presentCell?()
+            })
+        }
+                                
+    }
 }

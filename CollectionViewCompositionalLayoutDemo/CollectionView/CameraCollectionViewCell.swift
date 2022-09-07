@@ -10,10 +10,17 @@ import UIKit
 class CameraCollectionViewCell: UICollectionViewCell {
     var idLabel: UILabel!
     var nameLable: UILabel!
+    var imageView: UIImageView!
     
     struct Object: Hashable {
         var id: String
         var title: String
+    }
+    
+    struct PhotoObject: Hashable {
+        var id: Int
+        var image: UIImage?
+        var url: String
     }
     
     override init(frame: CGRect) {
@@ -26,8 +33,12 @@ class CameraCollectionViewCell: UICollectionViewCell {
         nameLable = UILabel(frame: CGRect(x: 0, y: 41, width: 100, height: 40))
         nameLable.textColor = .blue
         nameLable.textAlignment = .center
-        addSubview(idLabel)
-        addSubview(nameLable)
+        
+        imageView = UIImageView(frame:  CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.size.height))
+        imageView.contentMode = .scaleAspectFit
+        //addSubview(idLabel)
+        //addSubview(nameLable)
+        addSubview(imageView)
     }
     
     required init?(coder: NSCoder) {
@@ -38,5 +49,9 @@ class CameraCollectionViewCell: UICollectionViewCell {
         self.idLabel.text = object.id
         self.nameLable.text = object.title
         //self.nameLable.text = object.name
+    }
+    
+    func updatePhotoFrame(object: PhotoObject) {
+        self.imageView.image = object.image
     }
 }

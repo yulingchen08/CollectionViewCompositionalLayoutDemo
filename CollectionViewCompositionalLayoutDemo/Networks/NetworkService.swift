@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum NetworkError: Error {
     case decodeError(Error)
@@ -71,7 +72,7 @@ class NetworkService: NSObject {
     }
         
     func requestPhotos(completion: @escaping (Result<CuratedPhoto, NetworkError>) -> Void) {
-        let url = URL(string: "https://api.pexels.com/v1/curated/?page=2&per_page=15")!
+        let url = URL(string: "https://api.pexels.com/v1/curated/?page=2&per_page=10")!
         var request = URLRequest(url: url)
         let headers = [
             "Authorization": "563492ad6f9170000100000148b1f14dcf6d49e5b4a3a244e310a764",
@@ -103,6 +104,36 @@ class NetworkService: NSObject {
         }).resume()
         
     }
+    
+    
+    func downloadImage(url: String, completion: @escaping ((UIImage) -> Void)) {
+        guard let url = URL.init(string: url) else {
+            print("downloadImage, url is wrong")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                print("http error")
+                return
+            }
+            
+            guard let data = data else {
+                print("photo data is nill")
+                return
+            }
+            guard let image = UIImage.init(data: data) else {
+                print("data is not photo")
+                return
+            }
+                
+            completion(image)
+        }.resume()
+        
+        
+    }
+    
 }
 
 
