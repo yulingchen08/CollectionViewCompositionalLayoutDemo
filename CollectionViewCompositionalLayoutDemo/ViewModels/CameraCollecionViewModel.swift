@@ -40,6 +40,19 @@ class CameraCollectionViewModel {
             }
         }
     }
+    
+    func requestPhoto(perPage: Int) {
+        network.requestPhotos(perPage: 1) { [weak self] in
+            switch $0 {
+            case .success(let curatedPhoto):
+                print("requestPhotos success: \(curatedPhoto)")
+                self?.processCuratedPhotos(curatedPhoto: curatedPhoto)
+            case .failure(let error):
+                print("requestPhotos failure: \(error)")
+            }
+        }
+    }
+    
 }
 
 extension CameraCollectionViewModel {

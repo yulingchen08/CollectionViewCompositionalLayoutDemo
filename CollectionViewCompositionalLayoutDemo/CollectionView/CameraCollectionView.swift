@@ -9,7 +9,7 @@ import UIKit
 
 class CameraCollectionView: UIViewController {
     var collectionView: UICollectionView!
-    
+
     let viewModel = CameraCollectionViewModel()
     var dataSource: UICollectionViewDiffableDataSource<Section, CameraCollectionViewCell.PhotoObject>!
     let cameras: [CameraDTO] = [CameraDTO(id: 1, name: "Cannon"),
@@ -28,6 +28,8 @@ class CameraCollectionView: UIViewController {
                                 CameraDTO(id: 14, name: "Cannon"),
                                 CameraDTO(id: 15, name: "Cannon"),
                     ]
+    
+    
     
     lazy var horizontalOneRowLayout: UICollectionViewLayout = {
         /// 4
@@ -244,12 +246,14 @@ extension CameraCollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: (width - 30) / 2  , height: 120)
+        //垂直scroll下，為第一row和第二row之間的距離
         layout.minimumLineSpacing = CGFloat(integerLiteral: 10)
-        layout.minimumInteritemSpacing = CGFloat(integerLiteral: 2)
+        //垂直scroll下，為第一行和第二行之間的距離
+        layout.minimumInteritemSpacing = CGFloat(integerLiteral: 10)
         layout.scrollDirection = .vertical
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height), collectionViewLayout: layout)
-        collectionView.register(CameraCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: width, height: height-60), collectionViewLayout: layout)
+        //collectionView.register(CameraCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.delegate = self
         //collectionView.dataSource = self
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Header")
@@ -273,13 +277,29 @@ extension CameraCollectionView {
     }
     
     private func setupdataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, CameraCollectionViewCell.PhotoObject>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, object -> CameraCollectionViewCell in
-            guard let self = self else { return CameraCollectionViewCell() }
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CameraCollectionViewCell
-            cell.backgroundColor = indexPath.row % 2 == 0 ? UIColor.orange : UIColor.brown
+        //register cell iOS14
+        let cameraRegistration = UICollectionView.CellRegistration<CameraCollectionViewCell, CameraCollectionViewCell.PhotoObject> { cell, indexPath, item in
+         
+//            cell.updateWithItem(item)
+//            cell.accessories = [.disclosureIndicator()]
+        }
+        
+        
+        dataSource = UICollectionViewDiffableDataSource<Section, CameraCollectionViewCell.PhotoObject>(collectionView: collectionView, cellProvider: { /*[weak self]*/ collectionView, indexPath, item -> CameraCollectionViewCell in
+            //guard let self = self else { return CameraCollectionViewCell() }
+                                                
+            let cameraCell = collectionView.dequeueConfiguredReusableCell(
+                using: cameraRegistration,
+                for: indexPath,
+                item: item
+            )
+            cameraCell.backgroundColor = indexPath.row % 2 == 0 ? UIColor.orange : UIColor.brown
+            cameraCell.updatePhotoFrame(object: item)
+            //let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CameraCollectionViewCell
+            //cell.backgroundColor = indexPath.row % 2 == 0 ? UIColor.orange : UIColor.brown
             //cell.updateFrame(object: self.viewModel.cellObjects[indexPath.row])
-            cell.updatePhotoFrame(object: self.viewModel.cellPhotoObjects[indexPath.row])
-            return cell
+            //cell.updatePhotoFrame(object: self.viewModel.cellPhotoObjects[indexPath.row])
+            return cameraCell
         })
     }
     
@@ -289,7 +309,7 @@ extension CameraCollectionView {
         //snapShot.appendItems(viewModel.cellObjects, toSection: .collection)
         snapShot.appendItems(viewModel.cellPhotoObjects, toSection: .collection)
         dataSource.apply(snapShot, animatingDifferences: true)
-        
+        //試驗 snapShot.reconfiguredItemIdentifiers
     }
 }
 
