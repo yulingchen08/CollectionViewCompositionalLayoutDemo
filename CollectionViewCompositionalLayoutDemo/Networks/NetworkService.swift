@@ -71,7 +71,7 @@ class NetworkService: NSObject {
         }.resume()
     }
         
-    func requestPhotos(perPage: Int = 18, completion: @escaping (Result<CuratedPhoto, NetworkError>) -> Void) {
+    func requestPhotos(perPage: Int = 50, completion: @escaping (Result<CuratedPhoto, NetworkError>) -> Void) {
         let urlString = "https://api.pexels.com/v1/curated/?page=2&per_page=\(perPage)"
         let url = URL(string: urlString)!
         var request = URLRequest(url: url)
